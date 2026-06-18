@@ -1,50 +1,62 @@
+<div align="center">
+
 # ⚡ CodeForge
 
-<p align="center">
-  <img src="./logo.png" width="120" alt="CodeForge Logo" />
-</p>
+<img src="./logo.png" width="120" />
 
-<p align="center">
-  <b>CI/CD Automation for Modern Developers</b><br/>
-  Build • Test • Deploy • Monitor — All in one powerful DevOps engine
-</p>
+### CI/CD Automation for Modern Developers
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Go-1.22-blue?style=flat-square" />
-  <img src="https://img.shields.io/badge/CI/CD-Automation-purple?style=flat-square" />
-  <img src="https://img.shields.io/badge/Status-Active-success?style=flat-square" />
-</p>
+**Build • Test • Deploy • Monitor — in one unified DevOps engine**
+
+<br/>
+
+![Go](https://img.shields.io/badge/Go-1.22-00ADD8?style=flat-square)
+![CI/CD](https://img.shields.io/badge/CI%2FCD-Automation-7C3AED?style=flat-square)
+![Status](https://img.shields.io/badge/Status-Active-22C55E?style=flat-square)
 
 ---
 
-## ✨ Overview
+</div>
 
-**CodeForge** is a next-generation DevOps automation platform designed to simplify and accelerate software delivery.
+## ✨ What is CodeForge?
 
-It provides a unified system for:
+**CodeForge is a next-generation DevOps automation platform** designed to remove complexity from software delivery.
 
-- CI/CD pipeline automation
-- Git-based deployment triggers
-- Multi-environment deployments
-- Secure secrets management
-- Rollback & snapshot system
-- Real-time pipeline monitoring
-- GUI + CLI + Daemon in a single binary
+It turns your repositories into **self-deploying systems** with minimal configuration and maximum control.
 
-> Think of it as **GitHub Actions + Jenkins + Vercel + custom DevOps engine — all in one tool.**
+> Think: **GitHub Actions + Jenkins + Vercel + custom deployment engine — reimagined for developers who ship fast.**
 
 ---
 
-## 🚀 Features
+## 🚀 Why CodeForge?
 
-### ⚙️ CI/CD Engine
+Modern DevOps is fragmented.
+
+CodeForge unifies everything into one system:
+
+- 🧩 Build pipelines
+- 🔁 Automated deployments
+- 🔐 Secure secrets management
+- 📦 Rollback system
+- 📡 Real-time logs & monitoring
+- 🧠 Human-readable pipeline language (KZM)
+- 🖥️ CLI + GUI + Daemon in one binary
+
+---
+
+## ⚙️ Core Features
+
+### ⚡ CI/CD Engine
 - GitHub / GitLab integration
-- Folder-based watchers
-- Scheduled deployments (cron support)
-- Manual triggers via CLI or API
+- Folder watchers
+- Cron-based scheduling
+- Manual & API triggers
 
-### 🧠 Smart Pipeline Language (KZM)
-Human-readable deployment scripts:
+---
+
+### 🧠 KZM Pipeline Language
+
+A simple, human-readable deployment DSL:
 
 ```kzm
 project "My API"
@@ -57,45 +69,46 @@ before deploy:
 
 deploy to ssh "ubuntu@server" at "/var/www/app":
   restart "pm2 restart app"
+🔐 Secure Vault
 
+Encrypted secrets using AES-256-GCM
 
-🔐 Secure Secrets Vault
-AES-256-GCM encrypted storage
 Master key protection
-CLI-based secure management
+CLI-based management
+Zero secret exposure in logs or UI
 codeforge secrets set AWS_KEY xxxx
 codeforge secrets list
 🔄 Rollback System
-Automatic snapshot before deploy
-One-click rollback
-Safe failure recovery
-📊 Real-Time Monitoring
-Live logs streaming
+Snapshot before every deploy
+Instant rollback on failure
+Safe recovery at any point
+📊 Real-Time Observability
+Live deployment logs
 Pipeline status dashboard
-Success / failure analytics
-Deployment history tracking
-🖥️ Dual Interface
-Powerful CLI for developers
-Beautiful desktop GUI (Fyne)
-System tray integration
-Splash screen with branding
+Success / failure tracking
+Full deployment history
+🖥️ Unified Experience
+⚡ CLI for developers
+🎨 Beautiful GUI (Fyne)
+🔄 Background daemon
+🧭 System tray integration
 🏗️ Architecture
-CodeForge/
- ├── CLI (Cobra)
- ├── Daemon (Background Engine)
- ├── GUI (Fyne Desktop App)
- ├── KZM Parser (Custom DSL)
- ├── Executors (Pipeline Engine)
- ├── Adapters (SSH, AWS, Docker, cPanel)
- ├── Secrets Vault (AES-256-GCM)
- ├── Logger (JSON logs)
- └── Rollback Engine
+CodeForge
+├── CLI (Cobra)
+├── Daemon (Pipeline Engine)
+├── GUI (Fyne Desktop App)
+├── KZM Parser (DSL Engine)
+├── Executors (Build & Deploy)
+├── Adapters (SSH, AWS, Docker, cPanel)
+├── Secrets Vault (AES-256-GCM)
+├── Logger (Streaming + JSON logs)
+└── Rollback Engine
 ⚙️ Installation
 🔧 Requirements
 Go 1.22+
 Git
-Linux / Mac / Windows
-📦 Build from source
+Linux / macOS / Windows
+📦 Install from source
 git clone https://github.com/your-username/codeforge.git
 cd codeforge
 
@@ -105,39 +118,30 @@ go build -ldflags="-s -w" -o codeforge .
 sudo mv codeforge /usr/local/bin/
 codeforge --version
 🧪 Quick Start
-1. Initialize a pipeline
 codeforge init
-2. Validate pipeline
 codeforge check my-api.kzm
-3. Run manually
 codeforge run my-api.kzm
-4. Start daemon
 codeforge daemon start
 📂 Configuration
 
-All system data is stored in:
+All system data lives in:
 
 ~/.codeforge/
-
-Structure:
-
-pipelines/     → .kzm files
-logs/          → execution logs
-snapshots/     → rollback data
-secrets.enc    → encrypted secrets
-master.key     → encryption key
-daemon.pid     → running process
-🔐 Secrets Management
+Structure
+pipelines/   → deployment definitions (.kzm)
+logs/        → execution logs
+snapshots/   → rollback data
+secrets.enc  → encrypted secrets vault
+master.key   → encryption key
+daemon.pid   → running process
+🔐 Secrets
 codeforge secrets set GITHUB_TOKEN ghp_xxx
 codeforge secrets set SLACK_WEBHOOK https://hooks.slack.com/...
 codeforge secrets list
 
-Secrets are never exposed in logs or UI
+🔒 Secrets are always encrypted and never exposed anywhere.
 
-🔄 Deployment Targets
-
-CodeForge supports multiple platforms:
-
+🌍 Supported Deploy Targets
 SSH Servers
 AWS Lambda
 Docker Containers
@@ -170,25 +174,25 @@ codeforge rollback my-api
 🔔 Notifications
 Slack integration
 Email alerts
-Deployment success/failure reports
+Deployment reports
+Failure notifications
 🧠 Design Philosophy
 
-CodeForge is built with:
+We believe:
 
-Simplicity first
-Developer experience focus
-Zero configuration deployment
-Production-grade safety
-Observability by default
-📈 Roadmap
- Web dashboard version
+Simplicity > Complexity
+Automation > Manual work
+Visibility > Guesswork
+Safety first
+Developer experience matters
+🛣️ Roadmap
+ Web dashboard (SaaS version)
  Kubernetes adapter
  GitHub Actions import
- AI deployment suggestions
- Multi-region deployment
+ AI deployment assistant
+ Multi-region deployments
  Plugin marketplace
-🧑‍💻 Author
-
+👨‍💻 Author
 KhajumSanjog
 
-Built with ❤️ for developers who love automation.
+Built with ❤️ for developers who ship fast and break nothing.
