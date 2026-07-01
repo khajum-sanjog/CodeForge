@@ -56,22 +56,28 @@ func (a *CodeForgeApp) refreshSystemTrayMenu(deskApp desktop.App) {
 	if running {
 		stopStartItem = fyne.NewMenuItem("Stop Daemon", func() {
 			a.Daemon.Stop()
-			a.refreshSystemTrayMenu(deskApp)
-			a.refreshSidebar()
+			fyne.Do(func() {
+				a.refreshSystemTrayMenu(deskApp)
+				a.refreshSidebar()
+			})
 		})
 	} else {
 		stopStartItem = fyne.NewMenuItem("Start Daemon", func() {
 			_ = a.Daemon.Start()
-			a.refreshSystemTrayMenu(deskApp)
-			a.refreshSidebar()
+			fyne.Do(func() {
+				a.refreshSystemTrayMenu(deskApp)
+				a.refreshSidebar()
+			})
 		})
 	}
 
 	restartItem := fyne.NewMenuItem("Restart Daemon", func() {
 		a.Daemon.Stop()
 		_ = a.Daemon.Start()
-		a.refreshSystemTrayMenu(deskApp)
-		a.refreshSidebar()
+		fyne.Do(func() {
+			a.refreshSystemTrayMenu(deskApp)
+			a.refreshSidebar()
+		})
 	})
 
 	quitItem := fyne.NewMenuItem("Quit CodeForge", func() {

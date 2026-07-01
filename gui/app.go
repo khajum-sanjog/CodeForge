@@ -99,22 +99,23 @@ func (a *CodeForgeApp) showSplash() {
 	go func() {
 		for i := 0.0; i <= 1.0; i += 0.05 {
 			time.Sleep(100 * time.Millisecond)
+			// SetValue is safe to call from goroutines in Fyne
 			prog.SetValue(i)
 		}
 
-		// Initialize Daemon background loop
+		// Initialize Daemon background loop (not a UI op — safe in goroutine)
 		err := a.Daemon.Start()
 		if err != nil {
 			a.Logger.Log("daemon", "ERROR", "Failed to start daemon: %v", err)
 		}
 
-		// Transition to main window
-		a.buildMainWindow()
-		splash.Close()
-		a.MainWindow.Show()
-
-		// Start system tray
-		a.setupSystemTray()
+		// All UI operations MUST run on the main thread via fyne.Do()
+		fyne.Do(func() {
+			a.buildMainWindow()
+			splash.Close()
+			a.MainWindow.Show()
+			a.setupSystemTray()
+		})
 	}()
 }
 
