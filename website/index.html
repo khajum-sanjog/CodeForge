@@ -201,7 +201,7 @@
     <a href="#install">Install</a>
     <a href="#download">Download</a>
     <a href="#features">Features</a>
-    <a href="https://github.com/khajum7/codeforge" target="_blank">GitHub</a>
+    <a href="https://github.com/khajum-sanjog/codeforge" target="_blank">GitHub</a>
   </div>
   <a class="nav-cta" href="#download">Download Free →</a>
 </nav>
@@ -212,10 +212,10 @@
   <h1>The CI/CD Daemon<br/>Built for Developers</h1>
   <p>CodeForge is a lightweight, self-hosted CI/CD pipeline daemon with a custom DSL, encrypted secrets vault, and a beautiful desktop dashboard.</p>
   <div class="hero-buttons">
-    <a class="btn-primary" id="btn-download-hero" href="https://github.com/khajum7/codeforge/releases/latest">
+    <a class="btn-primary" id="btn-download-hero" href="https://github.com/khajum-sanjog/codeforge/releases/latest">
       ⬇ Download Latest
     </a>
-    <a class="btn-secondary" href="https://github.com/khajum7/codeforge" target="_blank">
+    <a class="btn-secondary" href="https://github.com/khajum-sanjog/codeforge" target="_blank">
       ⭐ View on GitHub
     </a>
   </div>
@@ -227,7 +227,7 @@
   <div class="code-block" id="install-block">
     <button class="copy-btn" onclick="copyInstall()">Copy</button>
 <span class="comment"># Linux AMD64</span>
-<span class="cmd">curl</span> -L https://github.com/khajum7/codeforge/releases/latest/download/codeforge-linux-amd64 -o codeforge
+<span class="cmd">curl</span> -L https://github.com/khajum-sanjog/codeforge/releases/latest/download/codeforge-linux-amd64 -o codeforge
 <span class="cmd">chmod</span> +x codeforge && sudo mv codeforge /usr/local/bin/
 <span class="cmd">codeforge</span> daemon start
   </div>
@@ -243,7 +243,7 @@
       <div class="platform-icon">🐧</div>
       <div class="platform-name">Linux x64</div>
       <div class="platform-sub">VPS, cPanel, Ubuntu, Debian</div>
-      <a class="download-link" href="https://github.com/khajum7/codeforge/releases/latest/download/codeforge-linux-amd64">
+      <a class="download-link" href="https://github.com/khajum-sanjog/codeforge/releases/latest/download/codeforge-linux-amd64">
         ⬇ codeforge-linux-amd64
       </a>
     </div>
@@ -251,7 +251,7 @@
       <div class="platform-icon">🐧</div>
       <div class="platform-name">Linux ARM64</div>
       <div class="platform-sub">Raspberry Pi, AWS Graviton</div>
-      <a class="download-link" href="https://github.com/khajum7/codeforge/releases/latest/download/codeforge-linux-arm64">
+      <a class="download-link" href="https://github.com/khajum-sanjog/codeforge/releases/latest/download/codeforge-linux-arm64">
         ⬇ codeforge-linux-arm64
       </a>
     </div>
@@ -259,7 +259,7 @@
       <div class="platform-icon">🍎</div>
       <div class="platform-name">macOS Apple Silicon</div>
       <div class="platform-sub">M1, M2, M3, M4</div>
-      <a class="download-link" href="https://github.com/khajum7/codeforge/releases/latest/download/codeforge-macos-arm64">
+      <a class="download-link" href="https://github.com/khajum-sanjog/codeforge/releases/latest/download/codeforge-macos-arm64">
         ⬇ codeforge-macos-arm64
       </a>
     </div>
@@ -267,7 +267,7 @@
       <div class="platform-icon">🍏</div>
       <div class="platform-name">macOS Intel</div>
       <div class="platform-sub">Intel Core i5/i7/i9</div>
-      <a class="download-link" href="https://github.com/khajum7/codeforge/releases/latest/download/codeforge-macos-amd64">
+      <a class="download-link" href="https://github.com/khajum-sanjog/codeforge/releases/latest/download/codeforge-macos-amd64">
         ⬇ codeforge-macos-amd64
       </a>
     </div>
@@ -275,7 +275,7 @@
       <div class="platform-icon">🪟</div>
       <div class="platform-name">Windows</div>
       <div class="platform-sub">Windows 10 / 11 x64</div>
-      <a class="download-link" href="https://github.com/khajum7/codeforge/releases/latest/download/codeforge-windows-amd64.exe">
+      <a class="download-link" href="https://github.com/khajum-sanjog/codeforge/releases/latest/download/codeforge-windows-amd64.exe">
         ⬇ codeforge-windows-amd64.exe
       </a>
     </div>
@@ -323,15 +323,15 @@
 <!-- FOOTER -->
 <footer>
   <p>Made with ❤️ by <a href="https://khajumsanjog.com" target="_blank">KhajumSanjog</a> &nbsp;·&nbsp;
-     <a href="https://github.com/khajum7/codeforge" target="_blank">GitHub</a> &nbsp;·&nbsp;
-     <a href="https://github.com/khajum7/codeforge/releases" target="_blank">All Releases</a>
+     <a href="https://github.com/khajum-sanjog/codeforge" target="_blank">GitHub</a> &nbsp;·&nbsp;
+     <a href="https://github.com/khajum-sanjog/codeforge/releases" target="_blank">All Releases</a>
   </p>
   <p style="margin-top:.5rem; font-size:.8rem;">CodeForge is open-source and free forever.</p>
 </footer>
 
 <script>
   // Auto-detect latest release version from GitHub API and update hero badge
-  fetch('https://api.github.com/repos/khajum7/codeforge/releases/latest')
+  fetch('https://api.github.com/repos/khajum-sanjog/codeforge/releases/latest')
     .then(r => r.json())
     .then(data => {
       if (data.tag_name) {
@@ -341,7 +341,7 @@
     }).catch(() => {});
 
   function copyInstall() {
-    const code = `curl -L https://github.com/khajum7/codeforge/releases/latest/download/codeforge-linux-amd64 -o codeforge\nchmod +x codeforge && sudo mv codeforge /usr/local/bin/\ncodeforge daemon start`;
+    const code = `curl -L https://github.com/khajum-sanjog/codeforge/releases/latest/download/codeforge-linux-amd64 -o codeforge\nchmod +x codeforge && sudo mv codeforge /usr/local/bin/\ncodeforge daemon start`;
     navigator.clipboard.writeText(code).then(() => {
       const btn = document.querySelector('.copy-btn');
       btn.textContent = 'Copied!';

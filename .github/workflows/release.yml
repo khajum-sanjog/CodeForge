@@ -80,7 +80,7 @@ jobs:
             ### Quick Install (Linux/macOS):
             ```bash
             # Linux AMD64
-            curl -L https://github.com/khajum7/codeforge/releases/download/${{ github.ref_name }}/codeforge-linux-amd64 -o codeforge
+            curl -L https://github.com/khajum-sanjog/codeforge/releases/download/${{ github.ref_name }}/codeforge-linux-amd64 -o codeforge
             chmod +x codeforge
             sudo mv codeforge /usr/local/bin/
 
