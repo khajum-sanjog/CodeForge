@@ -10,7 +10,6 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
-	"syscall"
 	"time"
 
 	"codeforge/internal/daemon"
@@ -84,10 +83,8 @@ var daemonStartCmd = &cobra.Command{
 		backgroundCmd := exec.Command(selfPath, argsList...)
 		backgroundCmd.Stdout = nil
 		backgroundCmd.Stderr = nil
-		// Detach process on Unix/macOS
-		backgroundCmd.SysProcAttr = &syscall.SysProcAttr{
-			Setsid: true,
-		}
+		// Detach process on Unix/macOS (no-op on Windows)
+		setDaemonProcess(backgroundCmd)
 
 		err = backgroundCmd.Start()
 		if err != nil {
@@ -123,7 +120,7 @@ var daemonStopCmd = &cobra.Command{
 		}
 
 		color.Cyan("Stopping CodeForge daemon (PID: %d)...", pid)
-		err = proc.Signal(syscall.SIGTERM)
+		err = sendTermSignal(proc)
 		if err != nil {
 			// fallback
 			_ = proc.Kill()
@@ -242,9 +239,8 @@ func getDaemonStatus() (int, bool) {
 		return 0, false
 	}
 
-	// On Unix, FindProcess always succeeds, we must send signal 0 to check if it exists
-	err = process.Signal(syscall.Signal(0))
-	if err == nil {
+	// Check if process is alive (platform-specific)
+	if isProcessRunning(process) {
 		return pid, true
 	}
 
