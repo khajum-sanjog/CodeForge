@@ -1,0 +1,13 @@
+project "PHP Website"
+
+watch github "myuser/php-site" on branch "main"
+
+use secrets from "~/.codeforge/secrets.enc"
+
+deploy to cpanel "myhost.com" at "/public_html":
+  user    "myhostinguser"
+  exclude ".env", "vendor", ".git"
+
+keep last 3
+
+notify email "webmaster@mysite.com"

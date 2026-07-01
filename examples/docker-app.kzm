@@ -1,0 +1,18 @@
+project "Docker App"
+
+watch github "myuser/docker-app" on branch "main"
+
+use secrets from "~/.codeforge/secrets.enc"
+
+before deploy:
+  run "go test ./..."  must pass
+
+deploy to docker "my-app":
+  image   "myuser/my-app:latest"
+  server  "ubuntu@myserver.com"
+  port    8080
+  restart always
+
+keep last 3
+
+notify slack "#deployments"

@@ -1,0 +1,25 @@
+project "Serverless API"
+
+watch github "myuser/api" on branch "main"
+
+use secrets from "~/.codeforge/secrets.enc"
+
+before deploy:
+  run "npm install"
+  run "npm test"      must pass
+  run "npm run build"
+
+deploy to lambda "my-api-prod":
+  region  "ap-south-1"
+  runtime "nodejs20.x"
+  memory  512
+  timeout 30
+  env     NODE_ENV = "production"
+
+after deploy:
+  run "npm run smoke-test"  must pass or rollback
+
+keep last 3
+
+notify slack "#backend"
+notify email "ops@company.com"

@@ -1,0 +1,21 @@
+# Apache .htaccess for apicodeforge.khajumsanjog.com
+# Place this file in the document root of your apicodeforge subdomain
+# e.g. /home/yourusername/public_html/apicodeforge/
+
+Options -Indexes
+
+# Force HTTPS
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Proxy ALL requests to the CodeForge daemon on port 7080
+RewriteRule ^(.*)$ http://127.0.0.1:7080/$1 [P,L]
+
+# Required for proxy to work
+RequestHeader set X-Forwarded-Proto "https"
+
+# CORS headers (backup - daemon already sets these)
+Header always set Access-Control-Allow-Origin "https://codeforge.khajumsanjog.com"
+Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+Header always set Access-Control-Allow-Headers "Content-Type, Authorization"

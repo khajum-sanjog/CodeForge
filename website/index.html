@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CodeForge — Modern CI/CD Daemon by KhajumSanjog</title>
+  <meta name="description" content="CodeForge is a lightweight, self-hosted CI/CD daemon with a custom DSL, encrypted secrets, and a beautiful desktop GUI. Download free for Linux, macOS, and Windows." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0c12;
+      --surface:   #111520;
+      --surface2:  #1a1f30;
+      --border:    #1e2540;
+      --accent:    #6c63ff;
+      --accent2:   #00d4aa;
+      --text:      #e4e8f0;
+      --muted:     #6b7280;
+      --code-bg:   #0d1117;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(10,12,18,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-size: 1.25rem; font-weight: 700; color: #fff; text-decoration: none; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 1.5rem; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent); color: #fff;
+      border: none; border-radius: 8px;
+      padding: .5rem 1.2rem; font-size: 0.9rem; font-weight: 600;
+      text-decoration: none; cursor: pointer;
+      transition: opacity .2s, transform .2s;
+    }
+    .nav-cta:hover { opacity: .85; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 7rem 2rem 5rem;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(108,99,255,.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: rgba(108,99,255,.15); border: 1px solid rgba(108,99,255,.4);
+      color: #a5a0ff; border-radius: 99px; padding: .3rem .9rem;
+      font-size: .8rem; font-weight: 500; margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800; line-height: 1.1;
+      background: linear-gradient(135deg, #fff 30%, #a5a0ff 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 1.2rem;
+    }
+    .hero p {
+      font-size: 1.15rem; color: var(--muted); max-width: 560px; margin: 0 auto 2.5rem;
+    }
+    .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      color: #fff; border: none; border-radius: 10px;
+      padding: .85rem 2rem; font-size: 1rem; font-weight: 600;
+      text-decoration: none; cursor: pointer;
+      box-shadow: 0 0 30px rgba(108,99,255,.35);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(108,99,255,.5); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--surface); color: var(--text);
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: .85rem 2rem; font-size: 1rem; font-weight: 500;
+      text-decoration: none; transition: border-color .2s, background .2s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); background: var(--surface2); }
+
+    /* ── QUICK INSTALL ── */
+    .install-section {
+      max-width: 700px; margin: 0 auto 5rem; padding: 0 2rem;
+      text-align: center;
+    }
+    .install-section h2 { font-size: 1.1rem; color: var(--muted); margin-bottom: 1rem; font-weight: 400; }
+    .code-block {
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.25rem 1.5rem;
+      text-align: left; position: relative;
+      font-family: 'JetBrains Mono', monospace; font-size: .85rem;
+      color: #c9d1d9; overflow-x: auto;
+    }
+    .code-block .comment { color: #6a737d; }
+    .code-block .cmd { color: var(--accent2); }
+    .copy-btn {
+      position: absolute; top: .75rem; right: .75rem;
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--muted); border-radius: 6px; padding: .3rem .7rem;
+      font-size: .75rem; cursor: pointer; transition: all .2s;
+    }
+    .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+
+    /* ── DOWNLOAD TABLE ── */
+    .downloads {
+      max-width: 800px; margin: 0 auto 6rem; padding: 0 2rem;
+    }
+    .downloads h2 {
+      text-align: center; font-size: 2rem; font-weight: 700;
+      margin-bottom: .5rem;
+    }
+    .downloads p { text-align: center; color: var(--muted); margin-bottom: 2rem; }
+
+    .platform-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: 1rem;
+    }
+    .platform-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.5rem;
+      display: flex; flex-direction: column; gap: .75rem;
+      transition: border-color .25s, transform .25s;
+      text-decoration: none; color: inherit;
+    }
+    .platform-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .platform-icon { font-size: 2rem; }
+    .platform-name { font-weight: 600; font-size: 1rem; }
+    .platform-sub { font-size: .8rem; color: var(--muted); }
+    .download-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: .4rem .9rem; font-size: .8rem;
+      color: var(--accent2); text-decoration: none; font-family: 'JetBrains Mono', monospace;
+      transition: border-color .2s;
+    }
+    .platform-card:hover .download-link { border-color: var(--accent2); }
+
+    /* ── FEATURES ── */
+    .features {
+      max-width: 1000px; margin: 0 auto 6rem; padding: 0 2rem;
+    }
+    .features h2 { text-align: center; font-size: 2rem; font-weight: 700; margin-bottom: .5rem; }
+    .features-sub { text-align: center; color: var(--muted); margin-bottom: 2.5rem; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 1.25rem; }
+    .feature-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.5rem;
+      transition: border-color .2s;
+    }
+    .feature-card:hover { border-color: var(--border); border-color: rgba(108,99,255,.4); }
+    .feature-icon { font-size: 1.5rem; margin-bottom: .75rem; }
+    .feature-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: .4rem; }
+    .feature-card p { font-size: .875rem; color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 3rem 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted); font-size: .875rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#"><span>Code</span>Forge</a>
+  <div class="nav-links">
+    <a href="#install">Install</a>
+    <a href="#download">Download</a>
+    <a href="#features">Features</a>
+    <a href="https://github.com/khajum7/codeforge" target="_blank">GitHub</a>
+  </div>
+  <a class="nav-cta" href="#download">Download Free →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge">✦ Open Source · Self-Hosted · Free Forever</div>
+  <h1>The CI/CD Daemon<br/>Built for Developers</h1>
+  <p>CodeForge is a lightweight, self-hosted CI/CD pipeline daemon with a custom DSL, encrypted secrets vault, and a beautiful desktop dashboard.</p>
+  <div class="hero-buttons">
+    <a class="btn-primary" id="btn-download-hero" href="https://github.com/khajum7/codeforge/releases/latest">
+      ⬇ Download Latest
+    </a>
+    <a class="btn-secondary" href="https://github.com/khajum7/codeforge" target="_blank">
+      ⭐ View on GitHub
+    </a>
+  </div>
+</section>
+
+<!-- QUICK INSTALL -->
+<section class="install-section" id="install">
+  <h2>One-line install on Linux &amp; macOS</h2>
+  <div class="code-block" id="install-block">
+    <button class="copy-btn" onclick="copyInstall()">Copy</button>
+<span class="comment"># Linux AMD64</span>
+<span class="cmd">curl</span> -L https://github.com/khajum7/codeforge/releases/latest/download/codeforge-linux-amd64 -o codeforge
+<span class="cmd">chmod</span> +x codeforge && sudo mv codeforge /usr/local/bin/
+<span class="cmd">codeforge</span> daemon start
+  </div>
+</section>
+
+<!-- DOWNLOADS -->
+<section class="downloads" id="download">
+  <h2>Download</h2>
+  <p>Choose your platform. All binaries are built headless (no GUI dependency) and statically linked.</p>
+
+  <div class="platform-grid">
+    <div class="platform-card">
+      <div class="platform-icon">🐧</div>
+      <div class="platform-name">Linux x64</div>
+      <div class="platform-sub">VPS, cPanel, Ubuntu, Debian</div>
+      <a class="download-link" href="https://github.com/khajum7/codeforge/releases/latest/download/codeforge-linux-amd64">
+        ⬇ codeforge-linux-amd64
+      </a>
+    </div>
+    <div class="platform-card">
+      <div class="platform-icon">🐧</div>
+      <div class="platform-name">Linux ARM64</div>
+      <div class="platform-sub">Raspberry Pi, AWS Graviton</div>
+      <a class="download-link" href="https://github.com/khajum7/codeforge/releases/latest/download/codeforge-linux-arm64">
+        ⬇ codeforge-linux-arm64
+      </a>
+    </div>
+    <div class="platform-card">
+      <div class="platform-icon">🍎</div>
+      <div class="platform-name">macOS Apple Silicon</div>
+      <div class="platform-sub">M1, M2, M3, M4</div>
+      <a class="download-link" href="https://github.com/khajum7/codeforge/releases/latest/download/codeforge-macos-arm64">
+        ⬇ codeforge-macos-arm64
+      </a>
+    </div>
+    <div class="platform-card">
+      <div class="platform-icon">🍏</div>
+      <div class="platform-name">macOS Intel</div>
+      <div class="platform-sub">Intel Core i5/i7/i9</div>
+      <a class="download-link" href="https://github.com/khajum7/codeforge/releases/latest/download/codeforge-macos-amd64">
+        ⬇ codeforge-macos-amd64
+      </a>
+    </div>
+    <div class="platform-card">
+      <div class="platform-icon">🪟</div>
+      <div class="platform-name">Windows</div>
+      <div class="platform-sub">Windows 10 / 11 x64</div>
+      <a class="download-link" href="https://github.com/khajum7/codeforge/releases/latest/download/codeforge-windows-amd64.exe">
+        ⬇ codeforge-windows-amd64.exe
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <h2>Everything you need</h2>
+  <p class="features-sub">Built for developers who want full control without cloud lock-in.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📝</div>
+      <h3>Custom DSL (.kzm files)</h3>
+      <p>Define pipelines in a clean, human-readable syntax. Triggers, steps, environments, rollback — all in one file.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>Encrypted Secrets Vault</h3>
+      <p>AES-256-GCM encrypted credentials stored locally. Never expose secrets in plain text or config files.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔄</div>
+      <h3>Auto Rollback</h3>
+      <p>Automatic snapshot and rollback on deployment failure. Your production site stays up even when deploys fail.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📡</div>
+      <h3>REST API</h3>
+      <p>Trigger pipelines, read logs, and rollback via HTTP. Integrate with webhooks, GitHub Actions, or your own tools.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🖥️</div>
+      <h3>Desktop GUI</h3>
+      <p>Beautiful Fyne-based desktop dashboard for macOS, Linux, and Windows. Manage pipelines visually.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Zero Dependencies</h3>
+      <p>Single static binary. No Docker, no Node.js, no Python. Download, chmod +x, run. That's it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Made with ❤️ by <a href="https://khajumsanjog.com" target="_blank">KhajumSanjog</a> &nbsp;·&nbsp;
+     <a href="https://github.com/khajum7/codeforge" target="_blank">GitHub</a> &nbsp;·&nbsp;
+     <a href="https://github.com/khajum7/codeforge/releases" target="_blank">All Releases</a>
+  </p>
+  <p style="margin-top:.5rem; font-size:.8rem;">CodeForge is open-source and free forever.</p>
+</footer>
+
+<script>
+  // Auto-detect latest release version from GitHub API and update hero badge
+  fetch('https://api.github.com/repos/khajum7/codeforge/releases/latest')
+    .then(r => r.json())
+    .then(data => {
+      if (data.tag_name) {
+        document.querySelector('.badge').textContent = '✦ Latest: ' + data.tag_name + ' · Open Source · Free';
+        document.getElementById('btn-download-hero').href = data.html_url;
+      }
+    }).catch(() => {});
+
+  function copyInstall() {
+    const code = `curl -L https://github.com/khajum7/codeforge/releases/latest/download/codeforge-linux-amd64 -o codeforge\nchmod +x codeforge && sudo mv codeforge /usr/local/bin/\ncodeforge daemon start`;
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 2000);
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+# Compiled binaries
+codeforge
+codeforge-linux
+codeforge-mac-arm
+codeforge-mac-intel
+codeforge.exe
+codeforge-headless
+codeforge-headless-linux
+
+# Environment / secrets (never commit)
+.env
+.env.server
+
+# macOS
+.DS_Store
+
+# Go build cache
+vendor/

@@ -1,0 +1,15 @@
+project "Frontend App"
+
+watch github "myuser/frontend" on branch "main"
+
+before deploy:
+  run "npm install"
+  run "npm run build"  must pass
+
+deploy to s3 "my-website-bucket":
+  folder     "./dist"
+  region     "us-east-1"
+  public     yes
+  invalidate cloudfront
+
+notify slack "#frontend"
