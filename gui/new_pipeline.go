@@ -42,6 +42,7 @@ type WizardState struct {
 	ImageOption string
 	ServerOption string
 	PortOption  string
+	PassOption  string
 
 	// Tests
 	RunTests    bool
@@ -270,6 +271,10 @@ func (a *CodeForgeApp) buildWizardStep3(state *WizardState) fyne.CanvasObject {
 			keyEntry.SetText(state.KeyOption)
 			keyEntry.OnChanged = func(s string) { state.KeyOption = s }
 
+			passEntry := widget.NewPasswordEntry()
+			passEntry.SetText(state.PassOption)
+			passEntry.OnChanged = func(s string) { state.PassOption = s }
+
 			restartEntry := widget.NewEntry()
 			restartEntry.SetText(state.RestartOpt)
 			restartEntry.OnChanged = func(s string) { state.RestartOpt = s }
@@ -278,6 +283,7 @@ func (a *CodeForgeApp) buildWizardStep3(state *WizardState) fyne.CanvasObject {
 				widget.NewFormItem("SSH Host Address", nameEntry),
 				widget.NewFormItem("Remote Path", pathEntry),
 				widget.NewFormItem("Key Path", keyEntry),
+				widget.NewFormItem("SSH Password", passEntry),
 				widget.NewFormItem("Restart Command", restartEntry),
 			))
 		case "Lambda":
@@ -305,10 +311,20 @@ func (a *CodeForgeApp) buildWizardStep3(state *WizardState) fyne.CanvasObject {
 			pathEntry.SetText(state.PathOption)
 			pathEntry.OnChanged = func(s string) { state.PathOption = s }
 
+			keyEntry := widget.NewEntry()
+			keyEntry.SetText(state.KeyOption)
+			keyEntry.OnChanged = func(s string) { state.KeyOption = s }
+
+			passEntry := widget.NewPasswordEntry()
+			passEntry.SetText(state.PassOption)
+			passEntry.OnChanged = func(s string) { state.PassOption = s }
+
 			subForm.Add(widget.NewForm(
 				widget.NewFormItem("cPanel Host domain", nameEntry),
 				widget.NewFormItem("Username", userEntry),
 				widget.NewFormItem("Remote Path", pathEntry),
+				widget.NewFormItem("Key Path", keyEntry),
+				widget.NewFormItem("Password", passEntry),
 			))
 		case "S3":
 			nameEntry.SetPlaceHolder("my-bucket-name")
@@ -335,6 +351,14 @@ func (a *CodeForgeApp) buildWizardStep3(state *WizardState) fyne.CanvasObject {
 			serverEntry.SetText(state.ServerOption)
 			serverEntry.OnChanged = func(s string) { state.ServerOption = s }
 
+			keyEntry := widget.NewEntry()
+			keyEntry.SetText(state.KeyOption)
+			keyEntry.OnChanged = func(s string) { state.KeyOption = s }
+
+			passEntry := widget.NewPasswordEntry()
+			passEntry.SetText(state.PassOption)
+			passEntry.OnChanged = func(s string) { state.PassOption = s }
+
 			portEntry := widget.NewEntry()
 			portEntry.SetText(state.PortOption)
 			portEntry.OnChanged = func(s string) { state.PortOption = s }
@@ -343,6 +367,8 @@ func (a *CodeForgeApp) buildWizardStep3(state *WizardState) fyne.CanvasObject {
 				widget.NewFormItem("Container Name", nameEntry),
 				widget.NewFormItem("Image Tag", imageEntry),
 				widget.NewFormItem("SSH Host Server", serverEntry),
+				widget.NewFormItem("SSH Key Path", keyEntry),
+				widget.NewFormItem("SSH Password", passEntry),
 				widget.NewFormItem("Mapped Port", portEntry),
 			))
 		case "VPS":
@@ -351,6 +377,14 @@ func (a *CodeForgeApp) buildWizardStep3(state *WizardState) fyne.CanvasObject {
 			pathEntry.SetText(state.PathOption)
 			pathEntry.OnChanged = func(s string) { state.PathOption = s }
 
+			keyEntry := widget.NewEntry()
+			keyEntry.SetText(state.KeyOption)
+			keyEntry.OnChanged = func(s string) { state.KeyOption = s }
+
+			passEntry := widget.NewPasswordEntry()
+			passEntry.SetText(state.PassOption)
+			passEntry.OnChanged = func(s string) { state.PassOption = s }
+
 			restartEntry := widget.NewEntry()
 			restartEntry.SetText(state.RestartOpt)
 			restartEntry.OnChanged = func(s string) { state.RestartOpt = s }
@@ -358,6 +392,8 @@ func (a *CodeForgeApp) buildWizardStep3(state *WizardState) fyne.CanvasObject {
 			subForm.Add(widget.NewForm(
 				widget.NewFormItem("VPS Host Server", nameEntry),
 				widget.NewFormItem("Target Path", pathEntry),
+				widget.NewFormItem("SSH Key Path", keyEntry),
+				widget.NewFormItem("SSH Password", passEntry),
 				widget.NewFormItem("Restart Command", restartEntry),
 			))
 		}
@@ -510,7 +546,12 @@ func (a *CodeForgeApp) generateKzmPreviewText(state *WizardState) string {
 		sb.WriteString(fmt.Sprintf("  path %q\n", state.PathOption))
 	case "SSH":
 		sb.WriteString(fmt.Sprintf("deploy to ssh %q at %q:\n", state.TargetName, state.PathOption))
-		sb.WriteString(fmt.Sprintf("  key %q\n", state.KeyOption))
+		if state.KeyOption != "" {
+			sb.WriteString(fmt.Sprintf("  key %q\n", state.KeyOption))
+		}
+		if state.PassOption != "" {
+			sb.WriteString(fmt.Sprintf("  password %q\n", state.PassOption))
+		}
 		sb.WriteString(fmt.Sprintf("  restart %q\n", state.RestartOpt))
 	case "Lambda":
 		sb.WriteString(fmt.Sprintf("deploy to lambda %q:\n", state.TargetName))
@@ -521,6 +562,12 @@ func (a *CodeForgeApp) generateKzmPreviewText(state *WizardState) string {
 	case "cPanel":
 		sb.WriteString(fmt.Sprintf("deploy to cpanel %q at %q:\n", state.TargetName, state.PathOption))
 		sb.WriteString(fmt.Sprintf("  user %q\n", state.UserOption))
+		if state.KeyOption != "" {
+			sb.WriteString(fmt.Sprintf("  key %q\n", state.KeyOption))
+		}
+		if state.PassOption != "" {
+			sb.WriteString(fmt.Sprintf("  password %q\n", state.PassOption))
+		}
 		sb.WriteString("  exclude \".env,vendor,.git\"\n")
 	case "S3":
 		sb.WriteString(fmt.Sprintf("deploy to s3 %q:\n", state.TargetName))
@@ -532,11 +579,23 @@ func (a *CodeForgeApp) generateKzmPreviewText(state *WizardState) string {
 		sb.WriteString(fmt.Sprintf("deploy to docker %q:\n", state.TargetName))
 		sb.WriteString(fmt.Sprintf("  image %q\n", state.ImageOption))
 		sb.WriteString(fmt.Sprintf("  server %q\n", state.ServerOption))
+		if state.KeyOption != "" {
+			sb.WriteString(fmt.Sprintf("  key %q\n", state.KeyOption))
+		}
+		if state.PassOption != "" {
+			sb.WriteString(fmt.Sprintf("  password %q\n", state.PassOption))
+		}
 		sb.WriteString(fmt.Sprintf("  port %s\n", state.PortOption))
 		sb.WriteString("  restart always\n")
 	case "VPS":
 		sb.WriteString(fmt.Sprintf("deploy to vps %q:\n", state.TargetName))
 		sb.WriteString(fmt.Sprintf("  path %q\n", state.PathOption))
+		if state.KeyOption != "" {
+			sb.WriteString(fmt.Sprintf("  key %q\n", state.KeyOption))
+		}
+		if state.PassOption != "" {
+			sb.WriteString(fmt.Sprintf("  password %q\n", state.PassOption))
+		}
 		sb.WriteString(fmt.Sprintf("  restart %q\n", state.RestartOpt))
 		sb.WriteString("  git yes\n")
 	}
