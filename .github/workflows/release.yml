@@ -23,7 +23,7 @@ jobs:
           go-version: '1.22'
 
       - name: Run tests
-        run: go test ./...
+        run: CGO_ENABLED=0 go test -tags headless ./...
 
       - name: Build all platforms
         run: |
@@ -80,7 +80,7 @@ jobs:
             ### Quick Install (Linux/macOS):
             ```bash
             # Linux AMD64
-            curl -L https://github.com/khajum-sanjog/codeforge/releases/download/${{ github.ref_name }}/codeforge-linux-amd64 -o codeforge
+            curl -L https://github.com/khajum-sanjog/CodeForge/releases/download/${{ github.ref_name }}/codeforge-linux-amd64 -o codeforge
             chmod +x codeforge
             sudo mv codeforge /usr/local/bin/
 
