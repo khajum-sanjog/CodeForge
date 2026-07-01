@@ -21,6 +21,6 @@ func init() {
 }
 
 func runGUI() {
-	app := gui.NewApp()
+	app := gui.NewApp(Version)
 	app.Run()
 }

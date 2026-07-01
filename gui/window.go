@@ -14,7 +14,7 @@ import (
 
 // buildMainWindow designs the core layout shell containing a header, sidebar, status bar, and content pane.
 func (a *CodeForgeApp) buildMainWindow() fyne.Window {
-	a.MainWindow = a.FyneApp.NewWindow("CodeForge — CI/CD - v1.0.0")
+	a.MainWindow = a.FyneApp.NewWindow("CodeForge — CI/CD - v" + a.Version)
 	a.MainWindow.SetIcon(LoadLogo())
 	a.MainWindow.Resize(fyne.NewSize(1100, 700))
 	a.MainWindow.SetOnClosed(func() {
@@ -69,7 +69,7 @@ func (a *CodeForgeApp) buildHeader() fyne.CanvasObject {
 	title.TextStyle = fyne.TextStyle{Bold: true}
 
 	sep := widget.NewLabel("·")
-	tagline := widget.NewLabel("CI/CD - v1.0.0")
+	tagline := widget.NewLabel("CI/CD - v" + a.Version)
 
 	credit := canvas.NewText("KhajumSanjog", a.FyneApp.Settings().Theme().Color("foreground", 0))
 	credit.TextSize = 11

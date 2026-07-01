@@ -22,7 +22,7 @@ func (a *CodeForgeApp) buildAboutScreen() fyne.CanvasObject {
 	title.TextStyle = fyne.TextStyle{Bold: true}
 	title.Alignment = fyne.TextAlignCenter
 
-	tagline := widget.NewLabel("CI/CD - v1.0.0")
+	tagline := widget.NewLabel("CI/CD - v" + a.Version)
 	tagline.Alignment = fyne.TextAlignCenter
 
 	credit := widget.NewLabel("Built with ♥ by KhajumSanjog")

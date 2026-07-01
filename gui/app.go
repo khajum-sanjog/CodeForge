@@ -27,10 +27,11 @@ type CodeForgeApp struct {
 	SidebarArea *fyne.Container
 	StatusLabel *widget.Label
 	StatusDot   *MinSizeCircle
+	Version     string
 }
 
 // NewApp instantiates the Fyne application and custom branding theme.
-func NewApp() *CodeForgeApp {
+func NewApp(version string) *CodeForgeApp {
 	a := app.NewWithID("com.khajumsanjog.codeforge")
 	a.SetIcon(LoadLogo())
 	a.Settings().SetTheme(&CodeForgeTheme{})
@@ -47,6 +48,7 @@ func NewApp() *CodeForgeApp {
 		Daemon:  d,
 		Logger:  l,
 		Current: "dashboard",
+		Version: version,
 	}
 
 	return cfApp
@@ -74,7 +76,7 @@ func (a *CodeForgeApp) showSplash() {
 	title.TextStyle = fyne.TextStyle{Bold: true}
 	title.Alignment = fyne.TextAlignCenter
 
-	subtitle := widget.NewLabel("CI/CD - v1.0.0")
+	subtitle := widget.NewLabel("CI/CD - v" + a.Version)
 	subtitle.Alignment = fyne.TextAlignCenter
 
 	prog := widget.NewProgressBar()
